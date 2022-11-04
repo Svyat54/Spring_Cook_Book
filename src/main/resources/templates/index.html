@@ -1,10 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+    <form id="recipeRequest">
+        <select id="selectDish" name="name">
+            <option th:each="name:${listNames}" th:text="${name}"></option>
+        </select>
+        <label for="firstTaskRadio">Краткая информация по рецепту</label>
+        <input id="firstTaskRadio" type="radio" name="isLink" value="/firstTask">
+        <label for="secondTaskRadio">Ссылка</label>
+        <input id="secondTaskRadio" type="radio" name="isLink" value="/secondTask">
+        <input type="submit" value="submit">
+    </form>
+    <p th:if="${cuisine} != null" th:text="${cuisine}"></p>
+    <p th:if="${type} != null" th:text="${type}"></p>
+    <p th:if="${ingredients} != null" th:text="${ingredients}"></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
+    <script>
+        $.ajax({
+            url: "/",
+            type: "GET",
+            contentType: "html"
+        });
 
+        $('#selectDish').change(function () {
+            console.log("onchange join")
+            listener()
+        });
+
+        function listener() {
+            let isLink = document.querySelectorAll('input[name = "isLink"]')
+            for (let link of isLink)
+                if (link.checked)
+                    $('#recipeRequest').attr("action", link.value);
+            // $.ajax({
+            //     url: "/firstTask",
+            //     type: "GET",
+            //     contentType: "html",
+            //     data:{
+            //         name: $('#selectDish').val()
+            //     },
+            //     success(data){
+            //         console.log(data)
+            //     }
+            // });
+            // console.log("ajax done")
+        }
+    </script>
 </body>
 </html>

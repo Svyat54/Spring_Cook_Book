@@ -8,38 +8,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Controller
 public class InitializeBaseController {
-    private LinkedList<Recipe> book = new LinkedList<>();
+    private static LinkedList<Recipe> book = new LinkedList<>();
+    private static LinkedList<String> listNames = new LinkedList<>();
+    public static Set<String> setOfIngredients = new TreeSet<>();
+
+    public static LinkedList<Recipe> getBook() {
+        return book;
+    }
+    public static LinkedList<String> getListNames() {
+        return listNames;
+    }
+    public static Set<String> getSetOfIngredients() {
+        return setOfIngredients;
+    }
+
     private String[] files = {"Caucasian.txt", "French.txt", "Mexican.txt", "Russian.txt"};
-    private LinkedList<String> listNames = new LinkedList<>();
+
     @GetMapping("/")
     public String initializeBase(Model model) throws IOException {
         flushBase();
         for(String path : files)
             book.addAll(Reader.getCuisine(path));
         initListNames();
+        initSetOfIngredients();
         model.addAttribute("listNames", listNames);
+        model.addAttribute("setOfIngredients", setOfIngredients);
         return "index";
-    }
-    @GetMapping("/firstTask")
-    public String infoRecipe(Model model, @RequestParam(required = false) String name){
-        Recipe recipe = getInfoRecipe(name);
-        if(recipe != null) {
-            model.addAttribute("cuisine", recipe.getCuisine());
-            model.addAttribute("type", recipe.getType());
-            model.addAttribute("ingredients", recipe.getIngredients());
-            model.addAttribute("listNames", listNames);
-        }
-        return "index";
-    }
-    private Recipe getInfoRecipe(String name) {
-        for (Recipe recipe : book)
-            if (recipe.getName().equals(name))
-                return recipe;
-        return null;
     }
 
     private void flushBase(){
@@ -53,6 +54,15 @@ public class InitializeBaseController {
                 listNames.add(n.getName());
             }
         }
+    }
+
+    private void initSetOfIngredients() {
+        HashSet<String> temp = new HashSet<>();
+        if (!book.isEmpty())
+            for (Recipe r: book)
+                if (!r.getIngredients().isEmpty())
+                    temp.addAll(r.getIngredients());
+        setOfIngredients.addAll(temp);
     }
 
 }

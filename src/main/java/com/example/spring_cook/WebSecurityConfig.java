@@ -17,7 +17,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         //если пользователь перешел по antMatchers разрешает всем(permitAll())
-                        .antMatchers("/", "/home", "/firstTask").permitAll()
+                        .antMatchers("/", "/home", "/firstA", "/firstB", "/firstC", "/firstD").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

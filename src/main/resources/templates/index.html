@@ -6,22 +6,98 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body>,
+<!--        Task A and B-->
     <form id="recipeRequest">
+        <p>Запрос по названию блюда</p>
         <select id="selectDish" name="name">
             <option th:each="name:${listNames}" th:text="${name}"></option>
         </select>
-        <label for="firstTaskRadio">Краткая информация по рецепту</label>
-        <input id="firstTaskRadio" type="radio" name="isLink" value="/firstTask">
-        <label for="secondTaskRadio">Ссылка</label>
-        <input id="secondTaskRadio" type="radio" name="isLink" value="/secondTask">
+        <div>
+            <label for="firstARadio">Краткая информация по рецепту</label>
+            <input id="firstARadio" type="radio" name="isLink" value="/firstA">
+            <label for="firstBRadio">Ссылка</label>
+            <input id="firstBRadio" type="radio" name="isLink" value="/firstB">
+        </div>
         <input type="submit" value="submit">
     </form>
+<!--    task A-->
+<div>
+    <p th:if="${name} != null" th:text="${name}"></p>
     <p th:if="${cuisine} != null" th:text="${cuisine}"></p>
     <p th:if="${type} != null" th:text="${type}"></p>
     <p th:if="${ingredients} != null" th:text="${ingredients}"></p>
+</div>
+<!--    task B-->
+<div>
+    <a th:if="${technology} != null" th:href="${technology}">Recipe</a>
+    <br>
+    <a th:if="${link} != null" th:href="${link}">youtube</a>
+</div>
+<!--            Task C-->
+    <form id="ingredientsRequest" action="/firstC">
+        <p>Запрос по ингредиентам</p>
+        <select id="selectIngredients" name="ingredients">
+            <option th:each="ingredients:${setOfIngredients}" th:text="${ingredients}"></option>
+        </select>
+        <div>
+        <input id="ingr1" name="ingr1" type="text" hidden>
+        <input id="ingr2" name="ingr2" type="text" hidden>
+        <input id="ingr3" name="ingr3" type="text" hidden>
+        <input id="ingr4" name="ingr4" type="text" hidden>
+        </div>
+        <input type="submit" value="submit">
+    </form>
+<!--        task C-->
+    <div>
+        <table th:if="${listIngr} != null" th:each="recipe:${listIngr}">
+            <tr>
+                <td th:text="${recipe.getName()}"></td>
+                <td><a th:href="${recipe.getTechnology()}">Recipe</a></td>
+            </tr>
+        </table>
+    </div>
+<!--        Task D-->
+    <form id="randomRequest" action="/firstD">
+        <p>Рандомный запрос</p>
+        <input type="submit" value="random recipe">
+    </form>
+    <div>
+        <p th:if="${recipe} != null" th:text="${recipe.getName()}"></p>
+        <p th:if="${recipe} != null" th:text="${recipe.getCuisine()}"></p>
+        <p th:if="${recipe} != null" th:text="${recipe.getIngredients()}"></p>
+        <a th:if="${recipe} != null" th:href="${recipe.getTechnology()}">Recipe</a>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
+<!--    <script type="text/javascript" th:src="@{/script.js}"></script>-->
+
     <script>
+        let firstARadio = $('#firstARadio');
+        let firstBRadio = $('#firstBRadio');
+        let recipeRequest = $('#recipeRequest');
+        let selectIngredients = $('#selectIngredients');
+
+        let ingredientsAmount = 0;
+        selectIngredients.change(function (){
+            ingredientsAmount++;
+            if(ingredientsAmount < 5) {
+                let input = $('#ingr' + ingredientsAmount);
+                input.val(selectIngredients.val());
+                input.show();
+            }else {
+                for (let i = 1; i < 5; i++) {
+                    let input = $('#ingr' + i);
+                    input.val("");
+                    input.hide();
+                }
+                ingredientsAmount = 1;
+                let input = $('#ingr' + ingredientsAmount);
+                input.val(selectIngredients.val());
+                input.show();
+            }
+        })
+
         $.ajax({
             url: "/",
             type: "GET",
@@ -29,28 +105,26 @@
         });
 
         $('#selectDish').change(function () {
-            console.log("onchange join")
-            listener()
-        });
-
-        function listener() {
             let isLink = document.querySelectorAll('input[name = "isLink"]')
             for (let link of isLink)
                 if (link.checked)
-                    $('#recipeRequest').attr("action", link.value);
-            // $.ajax({
-            //     url: "/firstTask",
-            //     type: "GET",
-            //     contentType: "html",
-            //     data:{
-            //         name: $('#selectDish').val()
-            //     },
-            //     success(data){
-            //         console.log(data)
-            //     }
-            // });
-            // console.log("ajax done")
-        }
+                    recipeRequest.attr("action", link.value);
+        });
+
+        //замена экшена у радио кнопки
+        firstARadio.change(function () {
+            if (!firstARadio.is("checked", true))
+                recipeRequest.attr("action", firstARadio.val())
+        });
+        firstBRadio.change(function () {
+            if(!firstBRadio.is("checked", true))
+                recipeRequest.attr("action", firstBRadio.val())
+        });
+
+        //автоматический выбор при старте странице
+        firstARadio.prop('checked', true);
+        recipeRequest.attr("action", "/firstA");
+
     </script>
 </body>
 </html>

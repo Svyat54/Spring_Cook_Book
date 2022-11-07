@@ -9,9 +9,8 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         //addViewController - если мы переходим по параметру
         //setViewName - то попадаем на
-//        registry.addViewController("/home").setViewName("index");
         registry.addViewController("/").setViewName("index");
-//        registry.addViewController("/hello").setViewName("hello");
-//        registry.addViewController("/firstTask").setViewName("index");
+        registry.addViewController("/login").setViewName("login");
+
     }
 }

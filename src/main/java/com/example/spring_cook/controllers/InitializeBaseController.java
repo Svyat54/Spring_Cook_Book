@@ -2,10 +2,10 @@ package com.example.spring_cook.controllers;
 
 import com.example.spring_cook.entities.Recipe;
 import com.example.spring_cook.utilites.Reader;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -32,7 +32,7 @@ public class InitializeBaseController {
     private String[] files = {"Caucasian.txt", "French.txt", "Mexican.txt", "Russian.txt"};
 
     @GetMapping("/")
-    public String initializeBase(Model model) throws IOException {
+    public String initializeBase(Model model, Authentication auth) throws IOException {
         flushBase();
         for(String path : files)
             book.addAll(Reader.getCuisine(path));
@@ -40,7 +40,10 @@ public class InitializeBaseController {
         initSetOfIngredients();
         model.addAttribute("listNames", listNames);
         model.addAttribute("setOfIngredients", setOfIngredients);
-        model.addAttribute("allTags", SecondTaskController.getAllTags());
+        model.addAttribute("allTags", Task2Controller.getAllTags());
+        model.addAttribute("allCuisine", Task3Controller.getAllCuisine());
+        if (auth != null)
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
         return "index";
     }
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.*;
 
 @Controller
-public class SecondTaskController {
+public class Task2Controller {
 
     static class SortByRating implements Comparator<Recipe>{
         public int compare(Recipe a, Recipe b){
@@ -66,6 +66,45 @@ public class SecondTaskController {
                 recipesByTag.add(recipe);
         int randomIndex = (int) (Math.random()*recipesByTag.size());
         return recipesByTag.get(randomIndex);
+    }
+
+    @GetMapping("/secondE")
+    public String secondE(Model model, @RequestParam String ingr1,
+                          @RequestParam(required = false) String ingr2,
+                          @RequestParam(required = false) String ingr3,
+                          @RequestParam(required = false) String ingr4){
+        LinkedList<String> list = new LinkedList<>();
+        list.add(ingr1);
+        if(!Objects.equals(ingr2, ""))
+            list.add(ingr2);
+        if(!Objects.equals(ingr3, ""))
+            list.add(ingr3);
+        if(!Objects.equals(ingr4, ""))
+            list.add(ingr4);
+        LinkedList<Recipe> recipe10 = getRecipeForIgnorIngr(list);
+        if(!recipe10.isEmpty()){
+            while (recipe10.size() > 10)
+                recipe10.removeLast();
+            model.addAttribute("recipe10", recipe10);
+        }
+        return "Task2E";
+    }
+
+    private static LinkedList<Recipe> getRecipeForIgnorIngr(LinkedList<String> ingr){
+        LinkedList<Recipe> list = new LinkedList<>();
+        boolean contains;
+        for(Recipe recipe : InitializeBaseController.getBook()) {
+            contains = true;
+            for (String ingredient : ingr) {
+                if (recipe.getIngredients().contains(ingredient)) {
+                    contains = false;
+                    break;
+                }
+            }
+            if (contains)
+                list.add(recipe);
+        }
+        return list;
     }
 
 }

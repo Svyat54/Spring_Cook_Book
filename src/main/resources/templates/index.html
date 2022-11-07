@@ -8,7 +8,7 @@
 </head>
 <body>,
 <!--        Task A and B-->
-    <form id="recipeRequest">
+    <form id="Task1AB">
         <p>Запрос по названию блюда</p>
         <select id="selectDish" name="name">
             <option th:each="name:${listNames}" th:text="${name}"></option>
@@ -21,19 +21,6 @@
         </div>
         <input type="submit" value="submit">
     </form>
-<!--    task A-->
-<div>
-    <p th:if="${name} != null" th:text="${name}"></p>
-    <p th:if="${cuisine} != null" th:text="${cuisine}"></p>
-    <p th:if="${type} != null" th:text="${type}"></p>
-    <p th:if="${ingredients} != null" th:text="${ingredients}"></p>
-</div>
-<!--    task B-->
-<div>
-    <a th:if="${technology} != null" th:href="${technology}">Recipe</a>
-    <br>
-    <a th:if="${link} != null" th:href="${link}">youtube</a>
-</div>
 <!--            Task C-->
     <form id="ingredientsRequest" action="/firstC">
         <p>Запрос по ингредиентам</p>
@@ -48,34 +35,42 @@
         </div>
         <input type="submit" value="submit">
     </form>
-<!--        task C-->
-    <div>
-        <table th:if="${listIngr} != null" th:each="recipe:${listIngr}">
-            <tr>
-                <td th:text="${recipe.getName()}"></td>
-                <td><a th:href="${recipe.getTechnology()}">Recipe</a></td>
-            </tr>
-        </table>
-    </div>
 <!--        Task D-->
     <form id="randomRequest" action="/firstD">
         <p>Рандомный запрос</p>
         <input type="submit" value="random recipe">
     </form>
-    <div>
-        <p th:if="${recipe} != null" th:text="${recipe.getName()}"></p>
-        <p th:if="${recipe} != null" th:text="${recipe.getCuisine()}"></p>
-        <p th:if="${recipe} != null" th:text="${recipe.getIngredients()}"></p>
-        <a th:if="${recipe} != null" th:href="${recipe.getTechnology()}">Recipe</a>
-    </div>
 
+<!--        Task 2 A-->
+    <form id="allTagsRequest" action="/secondA">
+        <p>Запрос списка тегов</p>
+        <input type="submit" value="submit">
+    </form>
+<!--            Task 2 B-->
+    <form id="top3Request" action="/secondB">
+        <p>Запрос Top 3 блюда</p>
+        <select id="selectTag" name="tag">
+            <option th:each="tag:${allTags}" th:text="${tag}"></option>
+        </select>
+        <input type="submit" value="submit">
+    </form>
+<!--    Task 2 C-->
+<form id="randomDinner" action="/secondC">
+    <p>Ужин из 3 блюд</p>
+    <input type="submit" value="Получить">
+</form>
+<!--    Task 2 D-->
+<form id="randomBreakfast" action="/secondD">
+    <p>Случайный завтрак</p>
+    <input type="submit" value="Получить">
+</form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
 <!--    <script type="text/javascript" th:src="@{/script.js}"></script>-->
 
     <script>
         let firstARadio = $('#firstARadio');
         let firstBRadio = $('#firstBRadio');
-        let recipeRequest = $('#recipeRequest');
+        let Task1AB = $('#Task1AB');
         let selectIngredients = $('#selectIngredients');
 
         let ingredientsAmount = 0;
@@ -108,22 +103,22 @@
             let isLink = document.querySelectorAll('input[name = "isLink"]')
             for (let link of isLink)
                 if (link.checked)
-                    recipeRequest.attr("action", link.value);
+                    Task1AB.attr("action", link.value);
         });
 
         //замена экшена у радио кнопки
         firstARadio.change(function () {
             if (!firstARadio.is("checked", true))
-                recipeRequest.attr("action", firstARadio.val())
+                Task1AB.attr("action", firstARadio.val())
         });
         firstBRadio.change(function () {
             if(!firstBRadio.is("checked", true))
-                recipeRequest.attr("action", firstBRadio.val())
+                Task1AB.attr("action", firstBRadio.val())
         });
 
         //автоматический выбор при старте странице
         firstARadio.prop('checked', true);
-        recipeRequest.attr("action", "/firstA");
+        Task1AB.attr("action", "/firstA");
 
     </script>
 </body>

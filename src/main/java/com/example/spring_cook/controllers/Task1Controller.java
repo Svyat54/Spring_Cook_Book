@@ -18,11 +18,9 @@ public class Task1Controller {
             model.addAttribute("cuisine", recipe.getCuisine());
             model.addAttribute("type", recipe.getType());
             model.addAttribute("ingredients", recipe.getIngredients());
-            model.addAttribute("listNames", InitializeBaseController.getListNames());
-            model.addAttribute("setOfIngredients", InitializeBaseController.setOfIngredients);
             model.addAttribute("name", recipe.getName());
         }
-        return "index";
+        return "Task1AB";
     }
 
     @GetMapping("/firstB")
@@ -32,10 +30,8 @@ public class Task1Controller {
             model.addAttribute("name", recipe.getName());
             model.addAttribute("technology", recipe.getTechnology());
             model.addAttribute("link", recipe.getLink());
-            model.addAttribute("listNames", InitializeBaseController.getListNames());
-            model.addAttribute("setOfIngredients", InitializeBaseController.setOfIngredients);
         }
-        return "index";
+        return "Task1AB";
     }
 
     @GetMapping("/firstC")
@@ -56,18 +52,14 @@ public class Task1Controller {
         if(!listIngr.isEmpty()){
             model.addAttribute("listIngr", listIngr);
         }
-        model.addAttribute("listNames", InitializeBaseController.getListNames());
-        model.addAttribute("setOfIngredients", InitializeBaseController.setOfIngredients);
-        return "index";
+        return "Task1C";
     }
 
     @GetMapping("/firstD")
     public String randomeRecipe(Model model){
         Recipe recipe = getRandomRecipe();
         model.addAttribute("recipe", recipe);
-        model.addAttribute("listNames", InitializeBaseController.getListNames());
-        model.addAttribute("setOfIngredients", InitializeBaseController.setOfIngredients);
-        return "index";
+        return "Task1D";
     }
 
 

@@ -2,6 +2,7 @@ package com.example.spring_cook.entities;
 
 import lombok.Data;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 @Data
 public class Recipe {

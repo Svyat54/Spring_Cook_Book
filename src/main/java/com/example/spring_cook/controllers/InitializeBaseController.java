@@ -40,6 +40,7 @@ public class InitializeBaseController {
         initSetOfIngredients();
         model.addAttribute("listNames", listNames);
         model.addAttribute("setOfIngredients", setOfIngredients);
+        model.addAttribute("allTags", SecondTaskController.getAllTags());
         return "index";
     }
 

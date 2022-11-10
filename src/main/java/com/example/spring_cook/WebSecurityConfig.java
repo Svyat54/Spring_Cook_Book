@@ -19,7 +19,7 @@ public class WebSecurityConfig {
                         //если пользователь перешел по antMatchers разрешает всем(permitAll())
                         .antMatchers("/", "/firstA", "/firstB", "/firstC", "/firstD",
                                 "/secondA", "/secondB", "/secondC", "/secondD", "/secondE", "/thirdA",
-                                "/thirdB", "/addRecipe").permitAll()
+                                "/thirdB").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

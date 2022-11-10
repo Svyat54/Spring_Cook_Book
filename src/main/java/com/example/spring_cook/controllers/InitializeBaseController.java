@@ -29,13 +29,12 @@ public class InitializeBaseController {
         return setOfIngredients;
     }
 
-    private String[] files = {"Caucasian.txt", "French.txt", "Mexican.txt", "Russian.txt"};
+    private String file = "Cuisine.txt";
 
     @GetMapping("/")
     public String initializeBase(Model model, Authentication auth) throws IOException {
         flushBase();
-        for(String path : files)
-            book.addAll(Reader.getCuisine(path));
+        book.addAll(Reader.getCuisine(file));
         initListNames();
         initSetOfIngredients();
         model.addAttribute("listNames", listNames);
@@ -52,7 +51,12 @@ public class InitializeBaseController {
             book.removeFirst();
     }
 
-    private void initListNames(){
+    public static void initListNames(){
+        if(!listNames.isEmpty()){
+            while (!listNames.isEmpty()){
+                listNames.removeFirst();
+            }
+        }
         if(!book.isEmpty()) {
             for(Recipe n : book){
                 listNames.add(n.getName());
@@ -67,6 +71,17 @@ public class InitializeBaseController {
                 if (!r.getIngredients().isEmpty())
                     temp.addAll(r.getIngredients());
         setOfIngredients.addAll(temp);
+    }
+
+    public static void deleteRecipeByName(String name){
+        int index = 0;
+        for(Recipe recipe : book){
+            if(recipe.getName().equals(name)){
+                book.remove(index);
+                break;
+            }
+            index++;
+        }
     }
 
 }

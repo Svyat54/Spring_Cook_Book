@@ -7,12 +7,25 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/login}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+<br>
+<form th:action="@{/login}" method="post">
+    <input type="submit" value="Sign In"/>
+</form>
+<br>
+<!--    Task 4 A-->
+<form th:if="${isAdmin}" action="/add">
+    <input type="submit" value="Добавить рецепт"> </input>
+</form>
+<br>
+<!--    Task 4 B-->
+<form th:if="${isAdmin}" action="/delete">
+    <input type="submit" value="Удалить рецепт"> </input>
+</form>
+<!--th:if="${!isAdmin}"-->
 <!--        Task A and B-->
     <form id="Task1AB">
         <p>Запрос по названию блюда</p>
@@ -61,21 +74,21 @@
         <input type="submit" value="submit">
     </form>
 <!--    Task 2 C-->
-<form id="randomDinner" action="/secondC">
-    <p>Ужин из 3 блюд</p>
-    <input type="submit" value="Получить">
+    <form id="randomDinner" action="/secondC">
+        <p>Ужин из 3 блюд</p>
+        <input type="submit" value="Получить">
 </form>
 <!--    Task 2 D-->
-<form id="randomBreakfast" action="/secondD">
-    <p>Случайный завтрак</p>
-    <input type="submit" value="Получить">
+    <form id="randomBreakfast" action="/secondD">
+        <p>Случайный завтрак</p>
+        <input type="submit" value="Получить">
 </form>
 <!--      Task 2 E-->
-<form id="ingredientsIgnorRequest" action="/secondE">
-    <p>Запрос по ингредиентам</p>
-    <select id="selectIgnorIngredients" name="ingredients">
-        <option th:each="ingredients:${setOfIngredients}" th:text="${ingredients}"></option>
-    </select>
+    <form id="ingredientsIgnorRequest" action="/secondE">
+        <p>Запрос по ингредиентам</p>
+        <select id="selectIgnorIngredients" name="ingredients">
+            <option th:each="ingredients:${setOfIngredients}" th:text="${ingredients}"></option>
+        </select>
     <div>
         <input id="ignor1" name="ingr1" type="text" hidden>
         <input id="ignor2" name="ingr2" type="text" hidden>
@@ -86,22 +99,17 @@
 </form>
 
 <!--    Task 3 A-->
-<form id="top3CuisineRequest" action="/thirdA">
-    <p>Запрос Top 3 блюда кухонь мира</p>
-    <select id="selectCuisine" name="cuisine">
-        <option th:each="cuisine:${allCuisine}" th:text="${cuisine}"></option>
-    </select>
+    <form id="top3CuisineRequest" action="/thirdA">
+        <p>Запрос Top 3 блюда кухонь мира</p>
+        <select id="selectCuisine" name="cuisine">
+            <option th:each="cuisine:${allCuisine}" th:text="${cuisine}"></option>
+        </select>
     <input type="submit" value="submit">
 </form>
 <!--   Task 3 B-->
-<form id="ratingByCuisine" action="/thirdB">
-    <p>Топ 3 кухонь мира</p>
+    <form id="ratingByCuisine" action="/thirdB">
+        <p>Топ 3 кухонь мира</p>
     <input type="submit" value="submit">
-</form>
-<br>
-<!--    Task 4 A-->
-<form th:if="${isAdmin}">
-    <a th:href="@{/addRecipe}">добавить рецепт</a>
 </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
